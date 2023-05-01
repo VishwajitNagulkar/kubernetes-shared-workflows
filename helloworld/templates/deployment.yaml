@@ -1,13 +1,13 @@
 apiVersion: apps/v1
-# kind: Deployment
-# metadata:
+kind: Deployment
+metadata:
   name: {{ include "helloworld.fullname" . }}
   labels:
     {{- include "helloworld.labels" . | nindent 4 }}
-spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+# spec:
+#   {{- if not .Values.autoscaling.enabled }}
+#   replicas: {{ .Values.replicaCount }}
+#   {{- end }}
   selector:
     matchLabels:
       {{- include "helloworld.selectorLabels" . | nindent 6 }}

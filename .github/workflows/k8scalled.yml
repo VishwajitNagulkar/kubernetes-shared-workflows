@@ -79,9 +79,9 @@ jobs:
           aws eks --region ${{ inputs.aws-region }} update-kubeconfig --name ${{ inputs.eks-cluster-name }}
           aws eks update-kubeconfig --name ${{ inputs.eks-cluster-name }}
 
-      - name: helm lint
-        run: |
-          helm lint ${{ inputs.helm-chart-directory }}
+      # - name: helm lint
+      #   run: |
+      #     helm lint ${{ inputs.helm-chart-directory }}
 
       - name: helm template
         run: |

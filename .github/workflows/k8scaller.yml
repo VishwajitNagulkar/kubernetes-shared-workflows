@@ -15,24 +15,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-workflow-A:
-    uses: VishwajitNagulkar/testaction/.github/workflows/trivy_called.yml@master
-    with:
-      severity: 'HIGH,CRITICAL'              ###which vulnabrity should disable the workflow (local image scan)
+  # call-workflow-A:
+  #   uses: VishwajitNagulkar/testaction/.github/workflows/trivy_called.yml@master
+  #   with:
+  #     severity: 'HIGH,CRITICAL'              ###which vulnabrity should disable the workflow (local image scan)
 
-  call-workflow-B:
-    needs: call-workflow-A
-    if: ${{ success() && needs.call-workflow-A.result == 'success' }}
-    uses: VishwajitNagulkar/testaction/.github/workflows/workflow_called.yml@master
+  call-workflow-A:
+    # needs: call-workflow-A
+    # if: ${{ success() && needs.call-workflow-A.result == 'success' }}
+    uses: VishwajitNagulkar/kubernetes-shared-workflows/.github/workflows/k8scalled.yml@master
     with:
       user: Vishwajit
       images: vishwajitnagulkar/test1
-      aws-region: ca-central-1
+      aws-region: us-east-2
       ECR_REPOSITORY: vishwajitnagulkar
       registry: 'DOCKERHUB'                ### 1. ECR, 2. DOCKERHUB, 3. DOCKERHUB,ECR
       IMAGE_TAG: ${{ github.run_number }}   ## image tags
       helm-chart-directory: helloworld
-      eks-cluster-name: test2-dev2-cluster
+      eks-cluster-name: test3-dev3-cluster
     secrets:
       aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
       aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

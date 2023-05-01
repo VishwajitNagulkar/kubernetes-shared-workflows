@@ -63,7 +63,7 @@ jobs:
           helm template ${{ inputs.helm-chart-directory }}
       - name: helm install and upgrade
         id: upgrade-helm-release
-        if: ${{ inputs.rollback-required}} != 'true'
+        if: ${{ inputs.rollback-required }} != 'true'
         run: |
           if [ -n "${{ inputs.namespace }}" ]; then
             helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }} -n ${{ inputs.namespace }}

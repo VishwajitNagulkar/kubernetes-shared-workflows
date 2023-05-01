@@ -23,7 +23,7 @@ jobs:
       eks-cluster-name: test3-dev3-cluster
       namespace: test4
       release-name: myrelease
-      rollback-required: false
+      rollback-required: true
       revison-number: 17
       helm-rollback-namespace: test4
 

@@ -30,6 +30,9 @@ on:
       helm-chart-directory:
         required: true
         type: string
+      release-name:
+        required: true
+        type: string
     secrets:
       aws-access-key-id:
         description: 'aws access keys'
@@ -37,6 +40,7 @@ on:
       aws-secret-access-key:
         description: 'aws secret access keys'
         required: true
+      
       # dockerhub-username:
       #   description: 'dockerhub username'
       #   required: true
@@ -93,7 +97,7 @@ jobs:
 
       - name: helm install and upgrade
         run: |
-          helm upgrade --install ${{ inputs.helm-chart-directory }} -n ${{ inputs.namespace }}
+          helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }} -n ${{ inputs.namespace }}
 
 
 

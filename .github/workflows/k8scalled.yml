@@ -25,7 +25,9 @@ on:
       revison-number:
         required: false
         type: string
- 
+      helm-rollback-namespace:
+         required: false
+         type: string
     secrets:
       aws-access-key-id:
         description: 'aws access keys'
@@ -53,15 +55,12 @@ jobs:
         run: |
           aws eks --region ${{ inputs.aws-region }} update-kubeconfig --name ${{ inputs.eks-cluster-name }}
           aws eks update-kubeconfig --name ${{ inputs.eks-cluster-name }}
-
       - name: helm lint
         run: |
           helm lint ${{ inputs.helm-chart-directory }}
-
       - name: helm template
         run: |
           helm template ${{ inputs.helm-chart-directory }}
-
       - name: helm install and upgrade
         id: upgrade-helm-release
         if: ${{ inputs.rollback-required}} != 'true'
@@ -71,7 +70,6 @@ jobs:
           else
             helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }}
           fi
-
       # - name: helm Rollback
       #   if: ${{ inputs.namespace }} == true
       #   run: |
@@ -84,19 +82,4 @@ jobs:
       - name: Rollback Helm Release
         if: (steps.upgrade-helm-release.outcome == 'failure') || (${{ inputs.rollback-required }} == true)
         run: |
-            helm rollback ${{ inputs.release-name }} ${{ inputs.revision-number }} -n ${{ helm-rollback-namespace }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            helm rollback ${{ inputs.release-name }} ${{ inputs.revision-number }} -n ${{ inputs.helm-rollback-namespace }}

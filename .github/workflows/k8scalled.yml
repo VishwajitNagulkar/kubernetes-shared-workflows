@@ -55,12 +55,15 @@ jobs:
         run: |
           aws eks --region ${{ inputs.aws-region }} update-kubeconfig --name ${{ inputs.eks-cluster-name }}
           aws eks update-kubeconfig --name ${{ inputs.eks-cluster-name }}
+      
       - name: helm lint
         run: |
           helm lint ${{ inputs.helm-chart-directory }}
+      
       - name: helm template
         run: |
           helm template ${{ inputs.helm-chart-directory }}
+
       - name: helm install and upgrade
         id: upgrade-helm-release
         if: ${{ inputs.rollback-required != 'true' }} 
@@ -70,14 +73,6 @@ jobs:
           else
             helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }}
           fi
-      # - name: helm Rollback
-      #   if: ${{ inputs.namespace }} == true
-      #   run: |
-      #     if [ -n "${{ inputs.namespace }}" ]; then
-      #       helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }} -n ${{ inputs.namespace }}
-      #     else
-      #       helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }}
-      #     fi
 
       - name: Rollback Helm Release
         if: ((steps.upgrade-helm-release.outcome == 'failure') || (inputs.rollback-required == 'true'))

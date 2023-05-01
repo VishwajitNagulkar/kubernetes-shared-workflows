@@ -41,12 +41,11 @@ on:
         description: 'aws secret access keys'
         required: true
 jobs:
-  build-image:
-    name: Build Images
+  helm-action:
+    name: helm-action
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout git repo
         uses: actions/checkout@v3
 
@@ -66,7 +65,6 @@ jobs:
         run: |
           helm lint ${{ inputs.helm-chart-directory }}
 
-
       - name: helm template
         run: |
           helm template ${{ inputs.helm-chart-directory }}
@@ -79,6 +77,16 @@ jobs:
           else
             helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }}
           fi
+
+
+      - name: helm list
+        run: |
+          helm list -A
+
+      - name: helm all pods
+        run: |
+          kubectl get pods -A
+
 
 
 

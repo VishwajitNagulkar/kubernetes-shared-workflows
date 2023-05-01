@@ -72,8 +72,13 @@ jobs:
           helm template ${{ inputs.helm-chart-directory }}
 
       - name: helm install and upgrade
+        if: ${{ inputs.namespace }} == true
         run: |
-          helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }} -n ${{ inputs.namespace }}
+          if [ -n "${{ inputs.namespace }}" ]; then
+            helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }} -n ${{ inputs.namespace }}
+          else
+            helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }}
+          fi
 
 
 

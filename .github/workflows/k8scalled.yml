@@ -3,27 +3,12 @@ name: workflow_call_A
 on:
   workflow_call:
     inputs:
-      # user:
-      #   required: true
-      #   type: string
-      # images:
-      #   required: true
-      #   type: string
       aws-region:
         required: true
         type: string
       namespace:
         required: false
         type: string
-      # ECR_REPOSITORY:
-      #   required: true
-      #   type: string
-      # registry:
-      #   required: true
-      #   type: string
-      # IMAGE_TAG:
-      #   required: true
-      #   type: string
       eks-cluster-name:
         required: true
         type: string
@@ -78,14 +63,6 @@ jobs:
             helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }}
           fi
 
-
-      - name: helm list
-        run: |
-          helm list -A
-
-      - name: helm all pods
-        run: |
-          kubectl get pods -A
 
 
 

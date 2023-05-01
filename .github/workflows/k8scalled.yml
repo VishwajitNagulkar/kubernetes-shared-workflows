@@ -6,11 +6,11 @@ on:
       aws-region:
         required: true
         type: string
-      namespace:
-        required: false
-        type: string
       eks-cluster-name:
         required: true
+        type: string
+      namespace:
+        required: false
         type: string
       helm-chart-directory:
         required: true
@@ -18,6 +18,14 @@ on:
       release-name:
         required: true
         type: string
+      rollback-required:
+        required: false
+        type: boolean
+        default: false    
+      revison-number:
+        required: false
+        type: string
+ 
     secrets:
       aws-access-key-id:
         description: 'aws access keys'
@@ -55,13 +63,28 @@ jobs:
           helm template ${{ inputs.helm-chart-directory }}
 
       - name: helm install and upgrade
-        if: ${{ inputs.namespace }} == true
+        id: upgrade-helm-release
+        if: ${{ inputs.rollback-required}} != 'true'
         run: |
           if [ -n "${{ inputs.namespace }}" ]; then
             helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }} -n ${{ inputs.namespace }}
           else
             helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }}
           fi
+
+      # - name: helm Rollback
+      #   if: ${{ inputs.namespace }} == true
+      #   run: |
+      #     if [ -n "${{ inputs.namespace }}" ]; then
+      #       helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }} -n ${{ inputs.namespace }}
+      #     else
+      #       helm upgrade --install ${{ inputs.release-name }} ${{ inputs.helm-chart-directory }}
+      #     fi
+
+      - name: Rollback Helm Release
+        if: (steps.upgrade-helm-release.outcome == 'failure') || (${{ inputs.rollback-required }} == true)
+        run: |
+            helm rollback ${{ inputs.release-name }} ${{ inputs.revision-number }} -n ${{ helm-rollback-namespace }}
 
 
 

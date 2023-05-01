@@ -83,6 +83,9 @@ jobs:
       #   run: |
       #     helm lint ${{ inputs.helm-chart-directory }}
 
+      - name: Set up chart-testing
+        uses: helm/chart-testing-action@v2.4.0
+
       - name: helm template
         run: |
           helm template ${{ inputs.helm-chart-directory }}

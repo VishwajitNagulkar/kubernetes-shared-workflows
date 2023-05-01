@@ -20,7 +20,7 @@ on:
         type: string
       rollback-required:
         required: false
-        type: boolean
+        type: string
         default: false    
       revison-number:
         required: false

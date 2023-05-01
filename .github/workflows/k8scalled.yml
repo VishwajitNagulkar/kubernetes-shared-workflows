@@ -80,6 +80,6 @@ jobs:
       #     fi
 
       - name: Rollback Helm Release
-        if: (steps.upgrade-helm-release.outcome == 'failure') || (${{ inputs.rollback-required == 'true' }})
+        if: ((steps.upgrade-helm-release.outcome == 'failure') || (inputs.rollback-required == 'true'))
         run: |
             helm rollback ${{ inputs.release-name }} ${{ inputs.revison-number }} -n ${{ inputs.helm-rollback-namespace }} 

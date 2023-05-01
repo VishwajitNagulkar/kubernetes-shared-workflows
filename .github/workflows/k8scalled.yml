@@ -82,4 +82,4 @@ jobs:
       - name: Rollback Helm Release
         if: (steps.upgrade-helm-release.outcome == 'failure') || (${{ inputs.rollback-required }} == true)
         run: |
-            helm rollback ${{ inputs.release-name }} 4 -n ${{ inputs.helm-rollback-namespace }} 
+            helm rollback ${{ inputs.release-name }} 10 -n ${{ inputs.helm-rollback-namespace }} 

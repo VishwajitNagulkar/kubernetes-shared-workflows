@@ -21,7 +21,7 @@ jobs:
       aws-region: us-east-2
       helm-chart-directory: helloworld
       eks-cluster-name: test3-dev3-cluster
-      # namespace: test4
+      namespace: test4
       release-name: myrelease
 
     secrets:

@@ -24,7 +24,7 @@ jobs:
       namespace: test4
       release-name: myrelease
       rollback-required: true
-      revison-number: 5
+      revison-number: 17
       helm-rollback-namespace: test4
 
     secrets:
